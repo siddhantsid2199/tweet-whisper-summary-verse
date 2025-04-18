@@ -1,10 +1,19 @@
 
 import { useState, useEffect } from "react";
-import { Twitter } from "lucide-react";
+import { Twitter, Settings, History, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Sidebar } from "@/components/chat/Sidebar";
 import { ChatMessage, MessageType } from "@/components/chat/ChatMessage";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type ChatHistoryItem = {
   id: string;
@@ -61,6 +70,7 @@ export default function Chat() {
   const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>(initialChatHistory);
   const [activeChat, setActiveChat] = useState<ChatHistoryItem>(initialChatHistory[0]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSelectChat = (id: string) => {
     const updatedHistory = chatHistory.map(chat => ({
@@ -89,6 +99,23 @@ export default function Chat() {
     
     setChatHistory([newChat, ...updatedHistory]);
     setActiveChat(newChat);
+  };
+
+  const handleClearHistory = () => {
+    setChatHistory([]);
+    setActiveChat({
+      id: Date.now().toString(),
+      title: "New Conversation",
+      date: new Date().toLocaleDateString(),
+      active: true,
+      messages: []
+    });
+    toast.success("Chat history cleared");
+  };
+
+  const handleLogout = () => {
+    navigate("/login");
+    toast.success("Logged out successfully");
   };
 
   const handleSubmit = async (message: string) => {
@@ -161,6 +188,23 @@ export default function Chat() {
             </div>
             <h1 className="text-xl font-bold text-primary">Tweet Summarizer</h1>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Settings className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleClearHistory}>
+                <History className="mr-2 h-4 w-4" />
+                Clear History
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
         
         <ScrollArea className="flex-1">
