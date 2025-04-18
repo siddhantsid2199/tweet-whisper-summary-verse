@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { MessageSquare, PlusCircle, Search, Settings } from "lucide-react";
+import { MessageSquare, PlusCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -73,17 +73,6 @@ export function Sidebar({ chatHistory, onSelectChat, onNewChat }: SidebarProps) 
           ))}
         </div>
       </ScrollArea>
-      
-      <div className="mt-auto border-t border-border/50 p-4">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="w-full justify-start gap-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-        >
-          <Settings className="h-4 w-4" />
-          <span>Settings</span>
-        </Button>
-      </div>
     </div>
   );
 }
