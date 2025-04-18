@@ -28,6 +28,11 @@ export default {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
+                tweet: {
+                    DEFAULT: '#1DA1F2',
+                    dark: '#0D8BD9',
+                    light: '#71C9F8'
+                },
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
