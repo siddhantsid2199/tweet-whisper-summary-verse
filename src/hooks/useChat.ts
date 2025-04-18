@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -94,6 +93,29 @@ export function useChat() {
     setActiveChat(newChat);
   };
 
+  const handleDeleteChat = (id: string) => {
+    const updatedHistory = chatHistory.filter(chat => chat.id !== id);
+    setChatHistory(updatedHistory);
+    
+    // If we're deleting the active chat, set a new active chat
+    if (activeChat.id === id) {
+      const newActiveChat = updatedHistory[0] || {
+        id: Date.now().toString(),
+        title: "New Conversation",
+        date: new Date().toLocaleDateString(),
+        active: true,
+        messages: []
+      };
+      
+      setActiveChat(newActiveChat);
+      if (updatedHistory.length === 0) {
+        setChatHistory([newActiveChat]);
+      }
+    }
+    
+    toast.success("Chat deleted successfully");
+  };
+
   const handleClearHistory = () => {
     setChatHistory([]);
     setActiveChat({
@@ -164,6 +186,7 @@ export function useChat() {
     handleSelectChat,
     handleNewChat,
     handleClearHistory,
-    handleSubmit
+    handleSubmit,
+    handleDeleteChat
   };
 }
